@@ -1,11 +1,9 @@
 #include <stdio.h>
-
-
+#include "app.h"
 
 int main() {
-	/*
-	 * app = new App();
-	 * app->run();
-	 * app->clean();
-	*/
+	struct app * app = app_init();
+	app_run(app);
+	app_free(app);
+	return 0;
 }
