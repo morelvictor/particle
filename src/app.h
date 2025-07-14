@@ -1,16 +1,19 @@
 #ifndef APP_H
 #define APP_H
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "constants.h"
+#include "scene_view.h"
 
 struct app {
 	SDL_Window * win;
 	SDL_Renderer * rend;
 	char running;
 	int width, height;
+	struct view * view;
 };
 
 struct app * app_init();

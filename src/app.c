@@ -23,6 +23,9 @@ struct app * app_init() {
 
 	SDL_GetWindowSize(app->win, &app->width, &app->height);
 
+	struct scene_view * scene_view = scene_view_init(app);
+	app->view = (struct view *) scene_view;
+
 	return app;
 
 error_handling:
@@ -41,6 +44,10 @@ int app_run(struct app * app) {
 				default: break;
 			}
 		}
+		SDL_SetRenderDrawColor(app->rend, 0, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderClear(app->rend);
+		app->view->paint(app->view, app->rend);
+		SDL_RenderPresent(app->rend);
 	}
 	return 0;
 }

@@ -1,10 +1,10 @@
 SRC_DIR = src
 BIN_DIR = .bin
 CC = gcc
-FLAGS = -g -Wall -Wno-unused-command-line-argument -std=c99 `sdl2-config --libs --cflags` -lSDL2_image -lSDL2_ttf
+FLAGS = -g -Wall -Wno-unused-command-line-argument -std=c99 `sdl2-config --libs` -lSDL2_image -lSDL2_ttf
 EXE = particle
 
-SRC = $(wildcard $(SRC_DIR)/*.c)
+SRC = $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJ = $(addprefix $(BIN_DIR)/, $(SRC:.c=.o))
 
 all: clean particle
