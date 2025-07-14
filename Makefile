@@ -13,6 +13,7 @@ $(EXE): $(OBJ) $(BIN_DIR) $(SRC_DIR)
 	$(CC) $(OBJ) -o $(EXE) $(FLAGS)
 
 $(BIN_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(BIN_DIR)
+	@mkdir -p $(dir $@)
 	$(CC) -c $< -o $@ $(FLAGS)
 
 $(SRC_DIR):

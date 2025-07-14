@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "app.h"
-#include "logger.h"
+#include "lib/logger.h"
 
 int main() {
 	logger_init();

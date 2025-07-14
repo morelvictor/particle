@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <stdlib.h>
-#include "logger.h"
+#include "../lib/logger.h"
 
 struct view {
 	struct app * app;

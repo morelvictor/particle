@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 #include "constants.h"
-#include "scene_view.h"
+#include "view/scene_view.h"
 
 struct app {
 	SDL_Window * win;
