@@ -1,9 +1,10 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#include <SDL/SLD2.h>
+#include <SDL2/SDL.h>
 #include <math.h>
 #include "vec3.h"
+#include "../constants.h"
 
 struct particle {
 	struct vec3 position;

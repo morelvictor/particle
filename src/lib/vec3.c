@@ -4,11 +4,11 @@ struct vec3 vec3_add(struct vec3 a, struct vec3 b) {
 	return (struct vec3) { a.x + b.x, a.y + b.y, a.z + b.z };
 }
 
-struct vec3 vec3_scal(struct vec3 a; double k) {
+struct vec3 vec3_scal(struct vec3 a, double k) {
 	return (struct vec3) { a.x * k, a.y * k, a.z * k };
 }
 
-double vec3_diff(struct vec3 a, struct vec3 b) {
+struct vec3 vec3_diff(struct vec3 a, struct vec3 b) {
 	return vec3_add(a, vec3_scal(b, -1));
 }
 
