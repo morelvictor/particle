@@ -2,6 +2,7 @@
 #define VEC3_H
 
 #include <math.h>
+#include <stdio.h>
 
 struct vec3 {
 	double x;
@@ -15,5 +16,7 @@ struct vec3 vec3_diff(struct vec3 a, struct vec3 b);
 double vec3_norm2(struct vec3 a);
 double vec3_dist(struct vec3 a, struct vec3 b);
 struct vec3 vec3_normalize(struct vec3 a);
+
+void vec3_pp(struct vec3 a);
 
 #endif

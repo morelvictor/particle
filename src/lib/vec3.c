@@ -24,4 +24,6 @@ struct vec3 vec3_normalize(struct vec3 a) {
 	return vec3_scal(a, vec3_norm2(a));
 }
 
-
+void vec3_pp(struct vec3 a) {
+	printf("(%e, %e, %e)\n", a.x, a.y, a.z);
+}

@@ -4,7 +4,9 @@
 void particle_gravity(struct particle * A, struct particle * B, double dt) {
 	double d = vec3_dist(A->position, B->position);
 	double mod_grav_force = - G * (B->mass) / (d * d);
-	A->velocity = vec3_scal(vec3_add(A->velocity, vec3_scal(vec3_normalize(vec3_diff(B->position, A->position)), mod_grav_force)), dt);
+	printf("mod_grav_force: %e, G = %e\n", mod_grav_force, G);
+	A->velocity = vec3_add(A->velocity, vec3_scal(vec3_normalize(vec3_diff(A->position, B->position)), mod_grav_force * dt * 100));
+	vec3_pp(A->velocity);
 }
 
 void particle_all_gravity(struct particle * T, int size, double dt) {

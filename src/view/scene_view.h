@@ -7,6 +7,7 @@
 
 #include "view.h"
 #include "../lib/particle.h"
+#include "../lib/vec3.h"
 #include "../constants.h"
 
 struct scene_view {

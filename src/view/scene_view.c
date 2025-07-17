@@ -1,5 +1,6 @@
 #include "scene_view.h"
 
+
 int particle_draw(SDL_Renderer * rend, struct particle particle) {
 	
 	filledCircleRGBA(rend, particle.position.x, particle.position.y, particle.radius, particle.color.r, particle.color.g, particle.color.b, particle.color.a);
@@ -12,6 +13,9 @@ int scene_view_update(struct view * view, double dt) {
 	struct scene_view * sv = (struct scene_view *) view;
 
 	particle_all_gravity(sv->particles, sv->particles_size, dt);
+	for(int i = 0; i < sv->particles_size; i++) {
+		sv->particles[i].position = vec3_add(sv->particles[i].position, sv->particles[i].velocity);
+	}
 
 	return 0;
 }
@@ -20,10 +24,12 @@ int scene_view_update(struct view * view, double dt) {
 int scene_view_paint(struct view * view, SDL_Renderer * rend) {
 	struct scene_view * sv = (struct scene_view *) view;
 
-	int a = particle_draw(rend, sv->particles[0]);
-	int b = particle_draw(rend, sv->particles[1]);
+	int acc = 0;
+	for(int i = 0; i < sv->particles_size; i++) {
+		acc += particle_draw(rend, sv->particles[i]);
+	}
 
-	return a + b;
+	return acc;
 }
 
 int scene_view_free(struct view * view) {
@@ -35,7 +41,7 @@ struct scene_view * scene_view_init(struct app * app) {
 	struct view * view = (struct view *) ret;
 	view->app = app;
 	view->paint = scene_view_paint;
-	view->update = NULL;
+	view->update = scene_view_update;
 	view->free = scene_view_free;
 	
 	ret->particles = malloc(PARTICLES_SIZE * sizeof(struct particle));
@@ -45,10 +51,10 @@ struct scene_view * scene_view_init(struct app * app) {
 
 	p[0] = (struct particle)
 		{
-			(struct vec3) { DFL_WIN_WIDTH / 2 - 50, DFL_WIN_HEIGHT / 2, 0 },
+			(struct vec3) { DFL_WIN_WIDTH / 2 - 50, DFL_WIN_HEIGHT / 2 + 10, 0 },
 			(struct vec3) { 0, 0, 0 },
-			20,
 			10,
+			1E10,
 			(SDL_Color) { 0xff, 0x00, 0x00, 0xff }
 		};
 
@@ -56,11 +62,18 @@ struct scene_view * scene_view_init(struct app * app) {
 		{
 			(struct vec3) { DFL_WIN_WIDTH / 2 + 50, DFL_WIN_HEIGHT / 2, 0 },
 			(struct vec3) { 0, 0, 0 },
-			20,
 			10,
+			1E10,
 			(SDL_Color) { 0x00, 0xff, 0x00, 0xff }
 		};
-
+	p[2] = (struct particle)
+		{
+			(struct vec3) { DFL_WIN_WIDTH / 2, DFL_WIN_HEIGHT / 2 + 50, 0 },
+			(struct vec3) { 0, 0, 0 },
+			10,
+			1E10,
+			(SDL_Color) { 0x00, 0x00, 0xff, 0xff }
+		};
 	return ret;
 }
 
