@@ -4,8 +4,8 @@ int view_paint(struct view * view, SDL_Renderer * rend) {
 	return view->paint(view, rend);
 }
 
-int view_update(struct view * view) {
-	return view->update(view);
+int view_update(struct view * view, double dt) {
+	return view->update(view, dt);
 }
 
 int view_free(struct view * view) {

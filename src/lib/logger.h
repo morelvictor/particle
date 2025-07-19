@@ -18,13 +18,9 @@ struct logger {
 struct logger logger;
 
 int logger_init();
-
 int logger_log(char * msg);
-
 int logger_warn(char * msg);
-
 int logger_error(char * msg);
-
 int logger_stop();
 
 #endif
