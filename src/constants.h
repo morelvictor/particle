@@ -6,5 +6,6 @@
 #define APP_TITLE "Particle"
 #define G (double) 6.674E-11
 #define PARTICLES_SIZE 3
+#define SCROLL_SPEED 3
 
 #endif

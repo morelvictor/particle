@@ -7,9 +7,11 @@
 
 struct view {
 	struct app * app;
+	int width, height;
 	int (* paint) (struct view * view, SDL_Renderer * rend);
 	int (* update) (struct view * view, double dt);
 	int (* free) (struct view * view);
+	int (* handle_event) (struct view * view, SDL_Event event);
 };
 
 int view_paint(struct view * view, SDL_Renderer * rend);

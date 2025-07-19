@@ -56,6 +56,8 @@ int app_run(struct app * app) {
 			fps = 0;
 		}
 
+		SDL_GetWindowSize(app->win, &app->view->width, &app->view->height);
+
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
@@ -64,11 +66,13 @@ int app_run(struct app * app) {
 					break;
 				default: break;
 			}
+			app->view->handle_event(app->view, event);
 		}
+
 		SDL_SetRenderDrawColor(app->rend, 0, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(app->rend);
-		app->view->paint(app->view, app->rend);
 		app->view->update(app->view, dt);
+		app->view->paint(app->view, app->rend);
 		SDL_RenderPresent(app->rend);
 
 		double end_time = now_s();

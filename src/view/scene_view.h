@@ -14,6 +14,8 @@ struct scene_view {
 	struct view view;
 	struct particle * particles;
 	int particles_size;
+	struct vec3 center;
+	double scale;
 };
 
 struct scene_view * scene_view_init(struct app * app);
