@@ -3,7 +3,7 @@
 
 int particle_draw(SDL_Renderer * rend, struct particle particle, struct vec3 offset, double scale) {
 	
-	filledCircleRGBA(rend, particle.position.x * (scale/100) + offset.x, particle.position.y  * (scale/100)+ offset.y, particle.radius * (scale/100), particle.color.r, particle.color.g, particle.color.b, particle.color.a);
+	filledCircleRGBA(rend, particle.position.x * (scale/100) + offset.x, particle.position.y  * (scale/100) + offset.y, particle.radius * (scale/100), particle.color.r, particle.color.g, particle.color.b, particle.color.a);
 
 	return 0;
 }
@@ -18,8 +18,8 @@ int scene_view_update(struct view * view, double dt) {
 		sv->particles[i].position = vec3_add(sv->particles[i].position, sv->particles[i].velocity);
 		sv->center = vec3_add(sv->center, vec3_scal(sv->particles[i].position, -1));
 	}
-	
-	sv->center = vec3_scal(sv->center, 1.0/(double) sv->particles_size);
+
+	sv->center = vec3_scal(sv->center, sv->scale/((double) sv->particles_size * 100));
 
 	sv->center.x += view->width / 2;
 	sv->center.y += view->height / 2;
@@ -36,7 +36,7 @@ int scene_view_paint(struct view * view, SDL_Renderer * rend) {
 		acc += particle_draw(rend, sv->particles[i], sv->center, sv->scale);
 	}
 	
-	filledCircleRGBA(rend, sv->center.x, sv->center.y, 1, 0xff, 0xff, 0xff, 0xff);
+	filledCircleRGBA(rend, sv->center.x, sv->center.y, 1, 0xff, 0, 0, 0xff);
 
 	return acc;
 }
@@ -64,7 +64,38 @@ int scene_view_free(struct view * view) {
 	return 0;
 }
 
-struct scene_view * scene_view_init(struct app * app) {
+int random_int_between(int min, int max) {
+
+    if (min > max) {
+        int tmp = min;
+        min = max;
+        max = tmp;
+    }
+
+    double scale = rand() / (RAND_MAX + 1.0);
+    return min + (int)(scale * (max - min + 1));
+}
+
+struct vec3 vec3_random(int x_min, int x_max, int y_min, int y_max, int z_min, int z_max) {
+	struct vec3 ret = { (double) random_int_between(x_min, x_max), (double) random_int_between(y_min, y_max), (double) random_int_between(z_min, z_max) };
+
+	return ret;
+}
+
+struct particle particle_random(int x_min, int x_max, int y_min, int y_max, int z_min, int z_max) {
+	struct particle ret = {
+			.position = vec3_random(x_min, x_max, y_min, y_max, z_min, z_max),
+			.velocity = (struct vec3) { 0, 0, 0 },
+			.radius = 10,
+			.mass = pow(10.0, random_int_between(5, 8)),
+			.color = (SDL_Color) { 0xff, 0xff, 0xff, 0xff }
+		};
+
+	return ret;
+}
+
+struct scene_view * scene_view_init(struct app * app, int width, int height) {
+	srand(1);
 	struct scene_view * ret = malloc(sizeof(struct scene_view));
 	struct view * view = (struct view *) ret;
 	view->app = app;
@@ -80,31 +111,10 @@ struct scene_view * scene_view_init(struct app * app) {
 
 	struct particle * p = ret->particles;
 
-	p[0] = (struct particle)
-		{
-			(struct vec3) { -50, 10, 0 },
-			(struct vec3) { 0, 0, 0 },
-			10,
-			1E5,
-			(SDL_Color) { 0xff, 0x00, 0x00, 0xff }
-		};
+	for(int i = 0; i < ret->particles_size; i++) {
+		p[i] = particle_random(- width / 2, width / 2, - height / 2, height / 2, 0, 0);
+	}
 
-	p[1] = (struct particle)
-		{
-			(struct vec3) { 50, 0, 0 },
-			(struct vec3) { 0, 0, 0 },
-			10,
-			1E8,
-			(SDL_Color) { 0x00, 0xff, 0x00, 0xff }
-		};
-	p[2] = (struct particle)
-		{
-			(struct vec3) { 0, 50, 0 },
-			(struct vec3) { 0, 0, 0 },
-			10,
-			1E10,
-			(SDL_Color) { 0x00, 0x00, 0xff, 0xff }
-		};
 	return ret;
 }
 

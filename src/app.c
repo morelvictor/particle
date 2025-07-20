@@ -32,7 +32,7 @@ struct app * app_init() {
 
 	SDL_GetWindowSize(app->win, &app->width, &app->height);
 
-	struct scene_view * scene_view = scene_view_init(app);
+	struct scene_view * scene_view = scene_view_init(app, app->width, app->height);
 	app->view = (struct view *) scene_view;
 
 	return app;
