@@ -18,6 +18,6 @@ struct scene_view {
 	double scale;
 };
 
-struct scene_view * scene_view_init(struct app * app);
+struct scene_view * scene_view_init(struct app * app, int width, int height);
 
 #endif
