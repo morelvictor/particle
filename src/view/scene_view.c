@@ -8,6 +8,7 @@ int particle_draw(SDL_Renderer * rend, struct particle particle, struct vec3 off
 	return 0;
 }
 
+int scene_view_save_data(struct scene_view *);
 
 int scene_view_update(struct view * view, double dt) {
 	struct scene_view * sv = (struct scene_view *) view;
@@ -24,9 +25,25 @@ int scene_view_update(struct view * view, double dt) {
 	sv->center.x += view->width / 2;
 	sv->center.y += view->height / 2;
 	
+	scene_view_save_data(sv);
+
 	return 0;
 }
 
+int scene_view_save_data(struct scene_view * sv) {
+	for(int i = 0; i < sv->particles_size; i++) {
+		struct vec3 pos = sv->particles[i].position;
+		float * datas = &sv->save_buffer[4 * i];
+		datas[0] = pos.x;
+		datas[1] = pos.y;
+		datas[2] = pos.z;
+		datas[3] = sv->particles[i].radius;
+	}
+
+	fwrite(sv->save_buffer, sizeof(float), 4 * sv->particles_size, sv->data_file);
+
+	return 0;
+}
 
 int scene_view_paint(struct view * view, SDL_Renderer * rend) {
 	struct scene_view * sv = (struct scene_view *) view;
@@ -61,6 +78,8 @@ int scene_view_handle_event(struct view * view, SDL_Event event) {
 }
 
 int scene_view_free(struct view * view) {
+	struct scene_view * sv = (struct scene_view *) view;
+	fclose(sv->data_file);
 	return 0;
 }
 
@@ -109,6 +128,13 @@ struct scene_view * scene_view_init(struct app * app, int width, int height) {
 	ret->center = (struct vec3) { 0, 0, 0 };
 	ret->scale = 100;
 
+	ret->data_file = fopen("data.partsim", "w+");
+	fprintf(ret->data_file, "%d %d %d\n", ret->particles_size, 0, 0);
+	ret->save_buffer = malloc(sizeof(float) * 4 * ret->particles_size);
+	if(ret->save_buffer == NULL) {
+		printf("Error: malloc save_buffer\n");
+	}
+
 	struct particle * p = ret->particles;
 
 	for(int i = 0; i < ret->particles_size; i++) {
@@ -117,4 +143,3 @@ struct scene_view * scene_view_init(struct app * app, int width, int height) {
 
 	return ret;
 }
-
