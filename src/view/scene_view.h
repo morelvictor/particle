@@ -2,6 +2,7 @@
 #define SCENE_VIEW_H
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 
@@ -16,6 +17,8 @@ struct scene_view {
 	int particles_size;
 	struct vec3 center;
 	double scale;
+	FILE * data_file;
+	float * save_buffer;
 };
 
 struct scene_view * scene_view_init(struct app * app, int width, int height);
