@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <stdarg.h>
 
 enum log_type {
 	LOG,
@@ -18,9 +19,9 @@ struct logger {
 struct logger logger;
 
 int logger_init();
-int logger_log(char * msg);
-int logger_warn(char * msg);
-int logger_error(char * msg);
+int logger_log(char *, ...);
+int logger_warn(char *, ...);
+int logger_error(char *, ...);
 int logger_stop();
 
 #endif

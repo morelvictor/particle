@@ -27,6 +27,9 @@ $(BIN_DIR):
 run: all
 	./particle
 
+debug: FLAGS += -DDEBUG=3
+debug: run
+
 clean:
 	rm -rf $(BIN_DIR)
 

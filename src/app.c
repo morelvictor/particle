@@ -14,19 +14,19 @@ struct app * app_init() {
 
 	app->running = 1;
 	if(SDL_Init(SDL_INIT_VIDEO)) {
-		perror("Problem at SDL initialisation");
+		logger_error("app_init: SDL_Init");
 		goto error_handling;
 	}
 
 	app->win = SDL_CreateWindow(APP_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DFL_WIN_WIDTH, DFL_WIN_HEIGHT, SDL_WINDOW_RESIZABLE);
 	if (!app->win) {
-		perror("Problem at window creation");
+		logger_error("app_init: SDL_CreateWindow");
 		goto error_handling;
 	}
 
 	app->rend = SDL_CreateRenderer(app->win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if(!app->rend) {
-		perror("Problem at renderer creation");
+		logger_error("app_init: SDL_CreateRenderer");
 		goto error_handling;
 	}
 
@@ -52,7 +52,7 @@ int app_run(struct app * app) {
 		double fps_dt = start_time - last_fps;
 		if(fps_dt > 1) {
 			last_fps = start_time;
-			printf("Fps: %d\n", fps);
+			logger_log("Fps: %d", fps);
 			fps = 0;
 		}
 
